@@ -1,13 +1,31 @@
+/*
+  Requirement: Make the "Manage Resources" page interactive.
+
+  Instructions:
+  1. Link this file to `admin.html` using:
+     <script src="admin.js" defer></script>
+  
+  2. In `admin.html`, add id="resources-tbody" to the <tbody> element
+     inside your resources-table. This id is required by this script.
+  
+  3. Implement the TODOs below.
+*/
+
+// --- Global Data Store ---
+// This will hold the resources loaded from the API.
 let resources = [];
 let editMode = false;
 let currentEditId = null;
 
+// --- Element Selections ---
 const resourceForm = document.querySelector('#resource-form');
 const resourcesTbody = document.querySelector('#resources-tbody');
 const titleInput = document.querySelector('#resource-title');
 const descriptionInput = document.querySelector('#resource-description');
 const linkInput = document.querySelector('#resource-link');
 const submitButton = document.querySelector('#add-resource');
+
+// --- Functions ---
 
 function createResourceRow(resource) {
   const tr = document.createElement('tr');
@@ -19,11 +37,11 @@ function createResourceRow(resource) {
   descriptionTd.textContent = resource.description || '';
 
   const linkTd = document.createElement('td');
-  const link = document.createElement('a');
-  link.href = resource.link;
-  link.target = '_blank';
-  link.textContent = resource.link;
-  linkTd.appendChild(link);
+  const anchor = document.createElement('a');
+  anchor.href = resource.link;
+  anchor.target = '_blank';
+  anchor.textContent = resource.link;
+  linkTd.appendChild(anchor);
 
   const actionsTd = document.createElement('td');
 
@@ -51,10 +69,10 @@ function createResourceRow(resource) {
 function renderTable() {
   resourcesTbody.innerHTML = '';
 
-  for (const resource of resources) {
-    const tr = createResourceRow(resource);
-    resourcesTbody.appendChild(tr);
-  }
+  resources.forEach((resource) => {
+    const row = createResourceRow(resource);
+    resourcesTbody.appendChild(row);
+  });
 }
 
 async function handleAddResource(event) {
@@ -64,7 +82,9 @@ async function handleAddResource(event) {
   const description = descriptionInput.value.trim();
   const link = linkInput.value.trim();
 
-  if (!title || !link) return;
+  if (!title || !link) {
+    return;
+  }
 
   if (editMode && currentEditId !== null) {
     const response = await fetch('./api/index.php', {
@@ -158,7 +178,9 @@ async function handleTableClick(event) {
       (item) => String(item.id) === String(id)
     );
 
-    if (!resource) return;
+    if (!resource) {
+      return;
+    }
 
     titleInput.value = resource.title;
     descriptionInput.value = resource.description || '';
@@ -174,11 +196,18 @@ async function loadAndInitialize() {
   const response = await fetch('./api/index.php');
   const result = await response.json();
 
-  resources = result.success ? result.data : [];
+  if (result.success) {
+    resources = result.data;
+  } else {
+    resources = [];
+  }
+
   renderTable();
 
   resourceForm.addEventListener('submit', handleAddResource);
   resourcesTbody.addEventListener('click', handleTableClick);
 }
 
+// --- Initial Page Load ---
+// Call the main async function to start the application.
 loadAndInitialize();
