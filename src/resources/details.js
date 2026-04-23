@@ -106,7 +106,8 @@ async function initializePage() {
       resourceTitle.textContent = 'Resource not found.';
     }
   } catch (error) {
-    resourceTitle.textContent = 'Resource not found.';
+        resourceTitle.textContent = 'Resource not found.';
+
   }
 }
 
