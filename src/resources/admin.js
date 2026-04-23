@@ -56,10 +56,25 @@ function renderTable() {
     tbody.removeChild(tbody.firstChild);
   }
 
+  const rows = (globalThis.resources || resources);
+
+  for (let i = 0; i < rows.length; i += 1) {
+    tbody.appendChild(createResourceRow(rows[i]));
+  }
+}
+
+  if (!tbody) {
+    return;
+  }
+
+  while (tbody.firstChild) {
+    tbody.removeChild(tbody.firstChild);
+  }
+
   for (let i = 0; i < resources.length; i += 1) {
     tbody.appendChild(createResourceRow(resources[i]));
   }
-}
+
 
 async function handleAddResource(event) {
   event.preventDefault();
