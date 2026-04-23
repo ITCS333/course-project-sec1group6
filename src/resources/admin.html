@@ -1,64 +1,147 @@
+<!--
+  Requirement: Create the Admin View for Course Resources
+
+  Instructions:
+  Fill in the HTML elements as described in the comments.
+  This page allows the teacher (admin) to perform full CRUD operations on course resources.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Resources</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="admin.js" defer></script>
+    <!-- TODO: Add the 'meta' tag for character encoding (UTF-8). -->
+<meta charset="UTF-8">
+    
+    <!-- TODO: Add the responsive 'viewport' meta tag.
+         The 'name' should be 'viewport' and the 'content' should set the 'width' to 'device-width'
+         and the 'initial-scale' to '1.0'. -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+
+
+    <!-- TODO: Add a title, e.g., "Manage Resources". -->
+  <title> Manage Resources </title>
+
+    <!-- TODO: Link to your CSS framework or stylesheet. -->
+   <link rel="stylesheet" href="style.css">
+
+    <!-- TODO: Link this script file:
+         <script src="admin.js" defer></script> -->
+  <script src="admin.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>Manage Course Resources</h1>
-    </header>
 
-    <main>
-        <section>
-            <h2>Add a New Resource</h2>
+    <!-- TODO: Create a 'header' with a main heading ('h1') "Manage Course Resources". -->
+  <header>
+    <h1 id="manage-heading">Manage Course Resources</h1>
+  </header>
 
-            <form id="resource-form" action="#">
-                <fieldset>
-                    <legend>Resource Details</legend>
+    <!-- TODO: Create the 'main' content area. -->
+  <main>
 
-                    <label for="resource-title">Title</label>
-                    <input id="resource-title" type="text" required>
+        <!-- Section 1: Add/Edit Resource Form -->
+        <!-- TODO: Create a 'section' for the form. -->
+    <section> 
+            <!-- TODO: Add a sub-heading ('h2') "Add a New Resource". -->
+      <h2>
+        Add a New Resource
+      </h2>
 
-                    <label for="resource-description">Description</label>
-                    <textarea id="resource-description"></textarea>
+            <!-- TODO: Create a 'form' with id="resource-form". Action can be '#'.
+                 This id is required by admin.js. -->
+      <form id="resource-form"action="#">
+                <!-- TODO: Use a 'fieldset' to group the form controls. -->
+        <fieldset>
+                    <!-- TODO: Add a 'legend', e.g., "Resource Details". -->
+          <legend> Resource Details </legend>
 
-                    <label for="resource-link">Resource Link</label>
-                    <input id="resource-link" type="url" required>
+                    <!-- TODO: Add a 'label' and 'input' for the resource title.
+                         - label 'for': "resource-title"
+                         - input 'id': "resource-title", type="text", required -->
+          <label for="resource-title"> Resource Title: </label>
+          <input id="resource-title" type="text" required>
 
-                    <button id="add-resource" type="submit">Add Resource</button>
-                </fieldset>
-            </form>
-        </section>
+                    <!-- TODO: Add a 'label' and 'textarea' for the resource description.
+                         - label 'for': "resource-description"
+                         - textarea 'id': "resource-description" -->
+          <label for="resource-description"> Resource Description: </label>
+          <textarea id="resource-description"required></textarea>
+                    
+                    <!-- TODO: Add a 'label' and 'input' for the resource link.
+                         - label 'for': "resource-link"
+                         - input 'id': "resource-link", type="url", required -->
+          <label for="resource-link"> Url Resource Link </label>
+          <input id="resource-link" type="url" required>
 
-        <section>
-            <h2>Existing Resources</h2>
+                    <!-- TODO: Add a 'button' to submit the form.
+                         - id="add-resource", type="submit", Text: "Add Resource" -->
+        <button id="add-resource" type="submit">Add Resource</button>               
+          <!-- End of fieldset. -->
+        </fieldset>
+            <!-- End of form. -->
+      </form>
+        <!-- End of form section. -->
+    </section>
 
-            <table id="resources-table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Link</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="resources-tbody">
-                    <tr>
-                        <td>Sample Resource</td>
-                        <td>Sample description for the resource.</td>
-                        <td><a href="#" target="_blank">Open Link</a></td>
-                        <td>
-                            <button class="edit-btn" data-id="1">Edit</button>
-                            <button class="delete-btn" data-id="1">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
+
+        <!-- Section 2: Existing Resources List -->
+        <!-- TODO: Create a 'section' to display the list of current resources. -->
+    <section> 
+            <!-- TODO: Add a sub-heading ('h2') "Existing Resources". -->
+      <h2> Existing Resources </h2>
+
+            <!-- TODO: Create a 'table' with id="resources-table". -->
+      <table id="resources-table">
+                <!-- TODO: Create a 'thead' and a 'tr' inside it. -->
+        <thead> 
+          <tr>
+         
+        
+                    <!-- TODO: Add 'th' elements for "Title", "Description", "Link", and "Actions". -->
+            <th>Title</th>
+            <th>Description</th>
+            <th>Link</th>
+           <th>Actions</th>
+        </tr>
+        </thead>
+
+                <!-- TODO: Create a 'tbody' with id="resources-tbody".
+                     This id is required by admin.js.
+                     Rows will be injected here dynamically by admin.js. -->
+        <tbody id="resources-tbody">
+          
+
+                    <!-- Each row follows this structure: -->
+                    <!-- TODO: Create a 'tr' for each resource. -->
+          <tr>
+                        <!-- TODO: Add a 'td' for the title. -->
+            <td> Title </td>
+                        <!-- TODO: Add a 'td' for the description. -->
+            <td> description here </td>
+                        <!-- TODO: Add a 'td' for the link. -->
+            <td>Add The Link</td>
+
+                        <!-- TODO: Add a 'td' containing the action buttons. -->
+            <td>
+                            <!-- TODO: Add an "Edit" button with class="edit-btn"
+                                 and data-id set to the resource's id. -->
+              <button class="edit-btn" data-id="1">Edit</button>
+                            <!-- TODO: Add a "Delete" button with class="delete-btn"
+                                 and data-id set to the resource's id. -->
+               <button class="delete-btn" data-id="1">Delete</button>
+
+                        <!-- End of actions 'td'. -->
+            </td>
+                    <!-- End of the row. -->
+          </tr>
+
+                <!-- End of tbody. -->
+          </tbody>
+            
+            <!-- End of table. -->
+      </table>
+        <!-- End of resources list section. -->
+    </section>
+
+    <!-- End of main. -->
+  </main>
 </body>
 </html>
