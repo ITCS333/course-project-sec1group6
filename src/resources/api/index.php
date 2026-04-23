@@ -51,6 +51,7 @@ function getAllResources($db)
     $params = [];
 
     $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
     if ($search !== '') {
         $sql .= " WHERE title LIKE :search OR description LIKE :search";
         $params[':search'] = '%' . $search . '%';
@@ -58,12 +59,14 @@ function getAllResources($db)
 
     $allowedSort = ['title', 'created_at'];
     $sort = $_GET['sort'] ?? 'created_at';
+
     if (!in_array($sort, $allowedSort, true)) {
         $sort = 'created_at';
     }
 
     $allowedOrder = ['asc', 'desc'];
     $order = strtolower($_GET['order'] ?? 'desc');
+
     if (!in_array($order, $allowedOrder, true)) {
         $order = 'desc';
     }
