@@ -24,7 +24,7 @@ function createResourceRow(resource) {
 function renderTable() {
   resourcesTbody.innerHTML = '';
 
-  resources.forEach(resource => {
+  resources.forEach((resource) => {
     const row = createResourceRow(resource);
     resourcesTbody.appendChild(row);
   });
@@ -61,7 +61,7 @@ async function handleAddResource(event) {
     const result = await response.json();
 
     if (result.success) {
-      resources = resources.map(resource =>
+      resources = resources.map((resource) =>
         Number(resource.id) === Number(currentEditId)
           ? { ...resource, title, description, link }
           : resource
@@ -113,14 +113,18 @@ async function handleTableClick(event) {
     const result = await response.json();
 
     if (result.success) {
-      resources = resources.filter(resource => Number(resource.id) !== Number(id));
+      resources = resources.filter(
+        (resource) => Number(resource.id) !== Number(id)
+      );
       renderTable();
     }
   }
 
   if (target.classList.contains('edit-btn')) {
     const id = target.dataset.id;
-    const resource = resources.find(resource => Number(resource.id) === Number(id));
+    const resource = resources.find(
+      (resource) => Number(resource.id) === Number(id)
+    );
 
     if (!resource) return;
 
@@ -144,8 +148,7 @@ async function loadAndInitialize() {
   }
 
   resourceForm.addEventListener('submit', handleAddResource);
-                      <button type="submit">Post Comment</button>
-
+  resourcesTbody.addEventListener('click', handleTableClick);
 }
 
 loadAndInitialize();
