@@ -6,13 +6,6 @@ var resources = [];
 var editMode = false;
 var currentEditId = null;
 
-const resourceForm = document.querySelector('#resource-form');
-const resourcesTbody = document.querySelector('#resources-tbody');
-const titleInput = document.querySelector('#resource-title');
-const descriptionInput = document.querySelector('#resource-description');
-const linkInput = document.querySelector('#resource-link');
-const submitButton = document.querySelector('#add-resource');
-
 function createResourceRow(resource) {
   const tr = document.createElement('tr');
 
@@ -53,17 +46,29 @@ function createResourceRow(resource) {
 }
 
 function renderTable() {
-  while (resourcesTbody.firstChild) {
-    resourcesTbody.removeChild(resourcesTbody.firstChild);
+  const tbody = document.querySelector('#resources-tbody');
+
+  if (!tbody) {
+    return;
+  }
+
+  while (tbody.firstChild) {
+    tbody.removeChild(tbody.firstChild);
   }
 
   for (let i = 0; i < resources.length; i += 1) {
-    resourcesTbody.appendChild(createResourceRow(resources[i]));
+    tbody.appendChild(createResourceRow(resources[i]));
   }
 }
 
 async function handleAddResource(event) {
   event.preventDefault();
+
+  const resourceForm = document.querySelector('#resource-form');
+  const titleInput = document.querySelector('#resource-title');
+  const descriptionInput = document.querySelector('#resource-description');
+  const linkInput = document.querySelector('#resource-link');
+  const submitButton = document.querySelector('#add-resource');
 
   const title = titleInput.value.trim();
   const description = descriptionInput.value.trim();
@@ -90,14 +95,13 @@ async function handleAddResource(event) {
     const result = await response.json();
 
     if (result.success) {
-      resources = resources.map((resource) => {
+      resources = resources.map(function (resource) {
         if (String(resource.id) === String(currentEditId)) {
           return {
-            ...resource,
             id: currentEditId,
-            title,
-            description,
-            link
+            title: title,
+            description: description,
+            link: link
           };
         }
         return resource;
@@ -119,9 +123,9 @@ async function handleAddResource(event) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      title,
-      description,
-      link
+      title: title,
+      description: description,
+      link: link
     })
   });
 
@@ -130,9 +134,9 @@ async function handleAddResource(event) {
   if (result.success) {
     resources.push({
       id: result.id,
-      title,
-      description,
-      link
+      title: title,
+      description: description,
+      link: link
     });
 
     renderTable();
@@ -153,7 +157,9 @@ async function handleTableClick(event) {
     const result = await response.json();
 
     if (result.success) {
-      resources = resources.filter((resource) => String(resource.id) !== String(id));
+      resources = resources.filter(function (resource) {
+        return String(resource.id) !== String(id);
+      });
       renderTable();
     }
 
@@ -162,16 +168,19 @@ async function handleTableClick(event) {
 
   if (target.classList.contains('edit-btn')) {
     const id = target.dataset.id;
-    const resource = resources.find((item) => String(item.id) === String(id));
+
+    const resource = resources.find(function (item) {
+      return String(item.id) === String(id);
+    });
 
     if (!resource) {
       return;
     }
 
-    titleInput.value = resource.title;
-    descriptionInput.value = resource.description || '';
-    linkInput.value = resource.link;
-    submitButton.textContent = 'Update Resource';
+    document.querySelector('#resource-title').value = resource.title;
+    document.querySelector('#resource-description').value = resource.description || '';
+    document.querySelector('#resource-link').value = resource.link;
+    document.querySelector('#add-resource').textContent = 'Update Resource';
 
     editMode = true;
     currentEditId = id;
@@ -179,6 +188,9 @@ async function handleTableClick(event) {
 }
 
 async function loadAndInitialize() {
+  const resourceForm = document.querySelector('#resource-form');
+  const tbody = document.querySelector('#resources-tbody');
+
   const response = await fetch('./api/index.php');
   const result = await response.json();
 
@@ -190,8 +202,13 @@ async function loadAndInitialize() {
 
   renderTable();
 
-  resourceForm.addEventListener('submit', handleAddResource);
-  resourcesTbody.addEventListener('click', handleTableClick);
+  if (resourceForm) {
+    resourceForm.addEventListener('submit', handleAddResource);
+  }
+
+  if (tbody) {
+    tbody.addEventListener('click', handleTableClick);
+  }
 }
 
 loadAndInitialize();
