@@ -20,7 +20,7 @@ function isValidPassword(password) {
   return password.length >= 8;
 }
 
-function handleLogin(event) {
+async function handleLogin(event) {
   event.preventDefault();
 
   const email = emailInput.value.trim();
@@ -36,10 +36,24 @@ function handleLogin(event) {
     return;
   }
 
-  displayMessage("Login successful!", "success");
+try {
+    const response = await fetch("login.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
 
-  emailInput.value = "";
-  passwordInput.value = "";
+    const data = await response.json();
+
+    if (data.success) {
+      window.location.href = "../../index.html";
+    } else {
+      displayMessage("Invalid email or password.", "error");
+    }
+
+  } catch (error) {
+    displayMessage("Something went wrong. Try again.", "error");
+  }
 }
 
 function setupLoginForm() {
